@@ -37,15 +37,15 @@ MyGame.prototype.initialize = function ()
     this.mCamera = new Camera(
         vec2.fromValues(0, 0), // position of the camera
         200,                       // width of camera
-        [0, 0, 800, 600]           // viewport (orgX, orgY, width, height)
+        [0, 0, 640, 480]           // viewport (orgX, orgY, width, height)
     );
     this.mCamera.setBackgroundColor([0.8, 0.8, 0.8, 1]);
             // sets the background to gray
 
     this.mMsg = new FontRenderable("Status Message");
     this.mMsg.setColor([0, 0, 0, 1]);
-    this.mMsg.getXform().setPosition(-98, -72);
-    this.mMsg.setTextHeight(3);
+    this.mMsg.getXform().setPosition(-96, -70);
+    this.mMsg.setTextHeight(4);
     
     this.mGrid = new Grid(5, 5, 25, 25);
     this.mGrid.setDraw(true);
@@ -72,7 +72,7 @@ MyGame.prototype.update = function ()
     
     this.mGrid.update();
     
-    echo += "Grid Size: " + this.mGrid.getWidth() + "x" + this.mGrid.getHeight() + " | ";
+    echo += "Grid Size: " + this.mGrid.getWidth() + "x" + this.mGrid.getHeight() + " with ";
     echo += "Cell Size: " + this.mGrid.getCellWidth() + "x" + this.mGrid.getCellHeight() + " ";
     
     msg += echo;

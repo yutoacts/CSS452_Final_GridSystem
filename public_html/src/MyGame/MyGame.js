@@ -13,22 +13,26 @@
 
 function MyGame() 
 {
+    
+    this.kHeroSprite = "assets/favicon.png";
+    
     // The camera to view the scene
     this.mCamera = null;
     this.mGrid = null;
     this.mMsg = null;
+    this.mHero = null;
 }
 
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () 
 {
-    
+    gEngine.Textures.loadTexture(this.kHeroSprite);
 };
 
 MyGame.prototype.unloadScene = function () 
 {
-    
+    gEngine.Textures.unloadTexture(this.kHeroSprite);
 };
 
 MyGame.prototype.initialize = function () 
@@ -49,6 +53,10 @@ MyGame.prototype.initialize = function ()
     
     this.mGrid = new Grid(5, 5, 25, 25);
     this.mGrid.setDraw(true);
+    
+    this.mHero = new GridObject(this.kHeroSprite, this.mGrid,
+                                0, 0, 
+                                1, 1, true);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more

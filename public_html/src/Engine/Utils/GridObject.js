@@ -9,23 +9,30 @@
 
 "use strict";
 
-function GridObject(renderableObj, grid, positionX, positionY, width, height, isLocked) {
+function GridObject(renderableObj, grid, posX, posY, width, height, isLocked) {
     this.mRenderComponent = renderableObj;
     this.mVisible = true;
 //    this.mCurrentFrontDir = vec2.fromValues(0, 1);  // this is the current front direction of the object
 //    this.mSpeed = 0;
     
     this.mGrid = grid;
-    this.mPosition = new vec2.fromValues(positionX, positionY);
-    this.mWidth = width;
-    this.mHeight = height;
     
-    this.mRenderComponent.getXform().setSize(this.mGrid.getCellWidth() * width, this.mGrid.getCellHeight() * height);
+    this.mGridObj = new SpriteRenderable(renderableObj);
+    
+    this.mGridObj.setColor([1, 1, 1, 0]);
+    this.mGridObj.getXform().setPosition();
+    this.mGridObj.getXform().setSize(this.mGrid.getCellWidth() * this.mGridWidth,
+                                    this.mGrid.getCellHeight() * this.mGridHeight);
+    
+    this.mGridPos = new vec2.fromValues(posX, posY);
+    
+    this.mGridWidth = width;
+    this.mGridHeight = height;
     
     this.mIsLocked = isLocked;
 }
 
-GridObject.prototype.getPos = function () { return this.mPosition; };
+GridObject.prototype.getPos = function () { return this.mGridPos; };
 
 GridObject.prototype.setPos = function (cellX, cellY) {
     this.mPosition = new vec2.fromValues(cellX, cellY);

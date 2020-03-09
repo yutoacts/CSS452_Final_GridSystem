@@ -47,7 +47,7 @@ MyGame.prototype.initialize = function ()
     this.mMsg.getXform().setPosition(-98, -72);
     this.mMsg.setTextHeight(3);
     
-    this.mGrid = new Grid(5, 5);
+    this.mGrid = new Grid(5, 5, 1, 1);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more

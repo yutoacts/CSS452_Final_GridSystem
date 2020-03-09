@@ -19,6 +19,9 @@ function GridObject(renderableObj, grid, positionX, positionY, width, height, is
     this.mPosition = new vec2.fromValues(positionX, positionY);
     this.mWidth = width;
     this.mHeight = height;
+    
+    this.mRenderComponent.getXform().setSize(this.mGrid.getCellWidth() * width, this.mGrid.getCellHeight() * height);
+    
     this.mIsLocked = isLocked;
 }
 
@@ -33,6 +36,7 @@ GridObject.prototype.getSize = function () { return vec2.fromValues(this.mWidth,
 GridObject.prototype.setSize = function(width, height) {
     this.mWidth = width;
     this.mHeight = height;
+    this.mRenderComponent.getXform().setSize(this.mGrid.getCellWidth() * width, this.mGrid.getCellHeight() * height);
 };
 
 GridObject.prototype.lockObject = function() { this.mIsLocked = true; };

@@ -28,10 +28,10 @@ function Grid(gridSizeX, gridSizeY, cellSizeX, cellSizeY)
 Grid.prototype.initialize = function()
 {
     // Initialize 2D Array
-    for(var i = 0; i < this.mRow; i++)
+    for(var i = 0; i < this.mGridSizeX; i++)
     {
-        var objectsY = [];
-        this.mGridObjects.push(objectsY);
+        var GridObjectsY = [];
+        this.mGridObjects.push(GridObjectsY);
     }
 };
 
@@ -56,7 +56,7 @@ Grid.prototype.getCellWidth = function () { return this.mCellSizeX; };
 Grid.prototype.getCellHeight = function () { return this.mCellSizeY; };
 Grid.prototype.getObjCell = function(cellX, cellY)
 {
-    if(this.mGridObjects[cellX][cellY] !== null)
+    if(this.mGridObjects[cellX][cellY] !== null || this.mGridObjects[cellX][cellY] !== undefined)
     {
         return this.mGridObjects[cellX][cellY];
     }

@@ -6,7 +6,7 @@
 /*jslint node: true, vars: true */
 /*global gEngine, Scene, GameObjectset, TextureObject, Camera, vec2,
   FontRenderable, SpriteRenderable, LineRenderable,
-  GameObject */
+  GameObject, Grid */
 /* find out more about jslint: http://www.jslint.com/help.html */
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
@@ -47,7 +47,7 @@ MyGame.prototype.initialize = function ()
     this.mMsg.getXform().setPosition(-98, -72);
     this.mMsg.setTextHeight(3);
     
-    //this.mGrid = new Grid(5, 5);
+    this.mGrid = new Grid(5, 5);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more

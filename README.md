@@ -1,2 +1,2 @@
-# CSS452_MP5
+# CSS452_Final_GridSystem
  Sean Miles and Yuto Akutsu

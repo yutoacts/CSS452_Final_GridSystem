@@ -80,7 +80,7 @@ MyGame.prototype.update = function ()
     
     this.mGrid.update();
     
-    echo += "Grid Size: " + this.mGrid.getWidth() + "x" + this.mGrid.getHeight() + " with ";
+    echo += "Grid Size: " + this.mGrid.getNumCols() + "x" + this.mGrid.getNumRows() + " with ";
     echo += "Cell Size: " + this.mGrid.getCellWidth() + "x" + this.mGrid.getCellHeight() + " ";
     
     msg += echo;

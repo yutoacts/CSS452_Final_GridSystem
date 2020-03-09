@@ -43,14 +43,28 @@ Grid.prototype.update = function()
 
 Grid.prototype.draw = function(aCamera)
 {
+    // Draw Grid lines
     if(this.mShowGrid)
     {
         this._drawGrid(aCamera);
     }
+    
+    // Draw all GridObjects
+    for(var i = 0; i < this.mGridSizeX; i++)
+    {
+        for(var j = 0; j < this.mGridSizeY; j++)
+        {
+            var obj = getObjFromCell(i, j);
+            if(obj !== null)
+            {
+                obj.draw();
+            }
+        }
+    }
 };
 
 // <editor-fold desc="Public Methods">
-Grid.prototype.getObjCell = function(cellX, cellY)
+Grid.prototype.getObjFromCell = function(cellX, cellY)
 {
     // Get object if exists at [cellX, cellY], otherwise return null
     if(this.mGridObjects[cellX][cellY] !== null || this.mGridObjects[cellX][cellY] !== undefined)
@@ -60,16 +74,31 @@ Grid.prototype.getObjCell = function(cellX, cellY)
     return null;
 };
 
-Grid.prototype.getObjWC = function(cellX, cellY)
+Grid.prototype.getWCFromCell = function(cellX, cellY)
 {
     // Get origin of Grid (lower left)
     var originX = this.mXform.getXPos() - (this.getTotalWidth() / 2);
     var originY = this.mXform.getYPos() - (this.getTotalHeight() / 2);
     
+    // Calculate WC based on origin, cell position, and cell size
     var objX = (originX + (cellX * this.mCellSizeX)) + (this.mCellSizeX / 2);
     var objY = (originY + (cellY * this.mCellSizeY)) + (this.mCellSizeY / 2);
     
     return [objX, objY];
+};
+
+Grid.prototype.addObj = function (obj) 
+{
+    // Add object to GridObjects
+    this.mGridObjects.push(obj);
+};
+
+Grid.prototype.removeObj = function (obj) 
+{
+    // Remove object from GridObjects if found
+    var index = this.mGridObjects.indexOf(obj);
+    if (index > -1)
+        this.mGridObjects.splice(index, 1);
 };
 
 Grid.prototype.getXform = function() { return this.mXform; };

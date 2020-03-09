@@ -15,7 +15,7 @@ function MyGame()
 {
     // The camera to view the scene
     this.mCamera = null;
-
+    this.mGrid = null;
     this.mMsg = null;
 }
 
@@ -47,7 +47,8 @@ MyGame.prototype.initialize = function ()
     this.mMsg.getXform().setPosition(-98, -72);
     this.mMsg.setTextHeight(3);
     
-    this.mGrid = new Grid(5, 5, 1, 1);
+    this.mGrid = new Grid(5, 5, 25, 25);
+    this.mGrid.setDraw(true);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -59,7 +60,7 @@ MyGame.prototype.draw = function ()
 
     this.mCamera.setupViewProjection();
     this.mMsg.draw(this.mCamera);   // only draw status in the main camera
-    
+    this.mGrid.draw(this.mCamera);
 };
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
@@ -68,7 +69,12 @@ MyGame.prototype.update = function ()
 {
     var msg = "Status: ";
     var echo = "";
-        
+    
+    this.mGrid.update();
+    
+    echo += "Grid Size: " + this.mGrid.getWidth() + "x" + this.mGrid.getHeight() + " | ";
+    echo += "Cell Size: " + this.mGrid.getCellWidth() + "x" + this.mGrid.getCellHeight() + " ";
+    
     msg += echo;
     this.mMsg.setText(msg);
 };

@@ -21,6 +21,7 @@ function Grid(gridSizeX, gridSizeY, cellSizeX, cellSizeY)
     this.mShowGrid = false;         // boolean for drawing Grid
     this.mGridXLines = [];          // array for Grid horizontal lines
     this.mGridYLines = [];          // array for Grid vertical lines
+    this.mGridColor = [0, 0, 0, 1]; // color for Grid lines
     
     this.initialize();
 }
@@ -37,7 +38,7 @@ Grid.prototype.initialize = function()
 
 Grid.prototype.update = function()
 {
-    
+    this._setGridLines();
 };
 
 Grid.prototype.draw = function(aCamera)
@@ -49,11 +50,6 @@ Grid.prototype.draw = function(aCamera)
 };
 
 // <editor-fold desc="Public Methods">
-Grid.prototype.getXform = function() { return this.mXform; };
-Grid.prototype.getWidth = function () { return this.mGridSizeX; };
-Grid.prototype.getHeight = function () { return this.mGridSizeY; };
-Grid.prototype.getCellWidth = function () { return this.mCellSizeX; };
-Grid.prototype.getCellHeight = function () { return this.mCellSizeY; };
 Grid.prototype.getObjCell = function(cellX, cellY)
 {
     if(this.mGridObjects[cellX][cellY] !== null || this.mGridObjects[cellX][cellY] !== undefined)
@@ -62,9 +58,52 @@ Grid.prototype.getObjCell = function(cellX, cellY)
     }
     return null;
 };
+
+Grid.prototype.getXform = function() { return this.mXform; };
+Grid.prototype.getWidth = function () { return this.mGridSizeX; };
+Grid.prototype.getHeight = function () { return this.mGridSizeY; };
+Grid.prototype.getCellWidth = function () { return this.mCellSizeX; };
+Grid.prototype.getCellHeight = function () { return this.mCellSizeY; };
+Grid.prototype.setColor = function (color)
+{
+    this.mGridColor = color;
+};
+Grid.prototype.getColor = function() { return this.mGridColor; };
+Grid.prototype.setDraw = function(bool)
+{
+    this.mShowGrid = bool;
+};
 // </editor-fold>
 
-Grid.prototype._drawGrid = function()
+Grid.prototype._setGridLines = function()
 {
+    var totalWidth = this.mGridSizeX * this.mCellSizeY;
+    var totalHeight = this.mGridSizeY * this.mCellSizeX;
+    var originX = this.mXform.getXPos() - (totalWidth / 2);
+    var originY = this.mXform.getYPos() - (totalHeight / 2);
     
+    for(var i = 0; i <= this.mGridSizeX; i++)
+    {
+        var lineY = new LineRenderable();
+        lineY.setColor(this.mGridColor);
+        lineY.setVertices(originX + (i * this.mCellSizeX), originY, originX + (i * this.mCellSizeX), originY + totalHeight);
+        this.mGridYLines.push(lineY);
+    }
+    
+    for(var j = 0; j <= this.mGridSizeY; j++)
+    {
+        var lineX = new LineRenderable();
+        lineX.setColor(this.mGridColor);
+        lineX.setVertices(originX, originY + (j * this.mCellSizeY), originX + totalWidth, originY + (j * this.mCellSizeY));
+        this.mGridXLines.push(lineX);
+    }
+};
+
+Grid.prototype._drawGrid = function(aCamera)
+{
+    for(var i = 0; i < this.mGridYLines.length; i++)
+    {
+        this.mGridXLines[i].draw(aCamera);
+        this.mGridYLines[i].draw(aCamera);
+    }
 };

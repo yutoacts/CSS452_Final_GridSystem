@@ -52,6 +52,7 @@ Grid.prototype.draw = function(aCamera)
 // <editor-fold desc="Public Methods">
 Grid.prototype.getObjCell = function(cellX, cellY)
 {
+    // Get object if exists at [cellX, cellY], otherwise return null
     if(this.mGridObjects[cellX][cellY] !== null || this.mGridObjects[cellX][cellY] !== undefined)
     {
         return this.mGridObjects[cellX][cellY];
@@ -75,13 +76,17 @@ Grid.prototype.setDraw = function(bool)
 };
 // </editor-fold>
 
+// Helper function for setting vertices of Grid lines
 Grid.prototype._setGridLines = function()
 {
+    // Calculate total width and height
     var totalWidth = this.mGridSizeX * this.mCellSizeY;
     var totalHeight = this.mGridSizeY * this.mCellSizeX;
+    // Get origin of Grid (lower left)
     var originX = this.mXform.getXPos() - (totalWidth / 2);
     var originY = this.mXform.getYPos() - (totalHeight / 2);
     
+    // Set vertical lines based on Grid width
     for(var i = 0; i <= this.mGridSizeX; i++)
     {
         var lineY = new LineRenderable();
@@ -90,6 +95,7 @@ Grid.prototype._setGridLines = function()
         this.mGridYLines.push(lineY);
     }
     
+    // Set horizontal lines based on Grid height
     for(var j = 0; j <= this.mGridSizeY; j++)
     {
         var lineX = new LineRenderable();
@@ -99,11 +105,19 @@ Grid.prototype._setGridLines = function()
     }
 };
 
+// Helper function for drawing Grid lines
 Grid.prototype._drawGrid = function(aCamera)
 {
-    for(var i = 0; i < this.mGridYLines.length; i++)
+    // Draw horizontal lines
+    for(var i = 0; i < this.mGridXLines.length; i++)
     {
         this.mGridXLines[i].draw(aCamera);
+        
+    }
+    
+    // Draw vertical lines
+    for(var j = 0; j < this.mGridYLines.length; j++)
+    {
         this.mGridYLines[i].draw(aCamera);
     }
 };

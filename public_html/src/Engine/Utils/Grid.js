@@ -54,10 +54,11 @@ Grid.prototype.draw = function(aCamera)
     {
         for(var j = 0; j < this.mGridSizeY; j++)
         {
-            var obj = getObjFromCell(i, j);
+            var obj = this.getObjFromCell(i, j);
             if(obj !== null)
             {
-                obj.draw();
+                console.log(obj);
+                obj.draw(aCamera);
             }
         }
     }

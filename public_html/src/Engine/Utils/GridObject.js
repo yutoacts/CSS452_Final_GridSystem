@@ -33,7 +33,16 @@ function GridObject(renderableObj, grid, cellX, cellY, width, height, isLocked) 
                                     ,this.mGrid.getCellHeight() * height);
     
     this.mIsLocked = isLocked;
+    
+    this.mGrid.addObj(this.mGridObj);
 }
+
+GridObject.prototype.draw = function (aCamera) {
+    console.log("called");
+    if (this.isVisible()) {
+        this.mRenderComponent.draw(aCamera);
+    }
+};
 
 GridObject.prototype.getPos = function () { return this.mGridPos; };
 

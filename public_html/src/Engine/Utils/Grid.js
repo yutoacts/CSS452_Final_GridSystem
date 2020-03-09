@@ -60,9 +60,23 @@ Grid.prototype.getObjCell = function(cellX, cellY)
     return null;
 };
 
+Grid.prototype.getObjWC = function(cellX, cellY)
+{
+    // Get origin of Grid (lower left)
+    var originX = this.mXform.getXPos() - (this.getTotalWidth() / 2);
+    var originY = this.mXform.getYPos() - (this.getTotalHeight() / 2);
+    
+    var objX = (originX + (cellX * this.mCellSizeX)) + (this.mCellSizeX / 2);
+    var objY = (originY + (cellY * this.mCellSizeY)) + (this.mCellSizeY / 2);
+    
+    return [objX, objY];
+};
+
 Grid.prototype.getXform = function() { return this.mXform; };
-Grid.prototype.getWidth = function () { return this.mGridSizeX; };
-Grid.prototype.getHeight = function () { return this.mGridSizeY; };
+Grid.prototype.getNumRows = function () { return this.mGridSizeY; };
+Grid.prototype.getNumCols = function () { return this.mGridSizeX; };
+Grid.prototype.getTotalWidth = function () { return (this.mGridSizeX * this.mCellSizeX); };
+Grid.prototype.getTotalHeight = function () { return (this.mGridSizeY * this.mCellSizeY); };
 Grid.prototype.getCellWidth = function () { return this.mCellSizeX; };
 Grid.prototype.getCellHeight = function () { return this.mCellSizeY; };
 Grid.prototype.setColor = function (color)
@@ -79,19 +93,16 @@ Grid.prototype.setDraw = function(bool)
 // Helper function for setting vertices of Grid lines
 Grid.prototype._setGridLines = function()
 {
-    // Calculate total width and height
-    var totalWidth = this.mGridSizeX * this.mCellSizeY;
-    var totalHeight = this.mGridSizeY * this.mCellSizeX;
     // Get origin of Grid (lower left)
-    var originX = this.mXform.getXPos() - (totalWidth / 2);
-    var originY = this.mXform.getYPos() - (totalHeight / 2);
+    var originX = this.mXform.getXPos() - (this.getTotalWidth() / 2);
+    var originY = this.mXform.getYPos() - (this.getTotalHeight() / 2);
     
     // Set vertical lines based on Grid width
     for(var i = 0; i <= this.mGridSizeX; i++)
     {
         var lineY = new LineRenderable();
         lineY.setColor(this.mGridColor);
-        lineY.setVertices(originX + (i * this.mCellSizeX), originY, originX + (i * this.mCellSizeX), originY + totalHeight);
+        lineY.setVertices(originX + (i * this.mCellSizeX), originY, originX + (i * this.mCellSizeX), originY + this.getTotalHeight());
         this.mGridYLines.push(lineY);
     }
     
@@ -100,7 +111,7 @@ Grid.prototype._setGridLines = function()
     {
         var lineX = new LineRenderable();
         lineX.setColor(this.mGridColor);
-        lineX.setVertices(originX, originY + (j * this.mCellSizeY), originX + totalWidth, originY + (j * this.mCellSizeY));
+        lineX.setVertices(originX, originY + (j * this.mCellSizeY), originX + this.getTotalWidth(), originY + (j * this.mCellSizeY));
         this.mGridXLines.push(lineX);
     }
 };
@@ -112,12 +123,11 @@ Grid.prototype._drawGrid = function(aCamera)
     for(var i = 0; i < this.mGridXLines.length; i++)
     {
         this.mGridXLines[i].draw(aCamera);
-        
     }
     
     // Draw vertical lines
     for(var j = 0; j < this.mGridYLines.length; j++)
     {
-        this.mGridYLines[i].draw(aCamera);
+        this.mGridYLines[j].draw(aCamera);
     }
 };

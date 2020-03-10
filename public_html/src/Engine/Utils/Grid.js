@@ -55,9 +55,8 @@ Grid.prototype.draw = function(aCamera)
         for(var j = 0; j < this.mGridSizeY; j++)
         {
             var obj = this.getObjFromCell(i, j);
-            if(obj !== null)
+            if(obj !== undefined)
             {
-                console.log(obj);
                 obj.draw(aCamera);
             }
         }
@@ -65,16 +64,7 @@ Grid.prototype.draw = function(aCamera)
 };
 
 // <editor-fold desc="Public Methods">
-Grid.prototype.getObjFromCell = function(cellX, cellY)
-{
-    // Get object if exists at [cellX, cellY], otherwise return null
-    if(this.mGridObjects[cellX][cellY] !== null || this.mGridObjects[cellX][cellY] !== undefined)
-    {
-        return this.mGridObjects[cellX][cellY];
-    }
-    return null;
-};
-
+Grid.prototype.getObjFromCell = function(cellX, cellY) { return this.mGridObjects[cellX][cellY]; };
 Grid.prototype.getWCFromCell = function(cellX, cellY)
 {
     // Get origin of Grid (lower left)
@@ -90,16 +80,13 @@ Grid.prototype.getWCFromCell = function(cellX, cellY)
 
 Grid.prototype.addObj = function (obj) 
 {
-    // Add object to GridObjects
-    this.mGridObjects.push(obj);
+    var objPos = obj.getPos();
+    this.mGridObjects[objPos[0]][objPos[1]] = obj;
 };
 
 Grid.prototype.removeObj = function (obj) 
 {
-    // Remove object from GridObjects if found
-    var index = this.mGridObjects.indexOf(obj);
-    if (index > -1)
-        this.mGridObjects.splice(index, 1);
+    // TODO: Remove object from GridObjects if found
 };
 
 Grid.prototype.getXform = function() { return this.mXform; };

@@ -9,11 +9,8 @@
 
 "use strict";
 
-function GridObject(renderableObj, grid, cellX, cellY, width, height, isLocked) {
-    this.mRenderComponent = renderableObj;
+function GridObject(obj, grid, cellX, cellY, width, height, isLocked) {
     this.mVisible = true;
-//    this.mCurrentFrontDir = vec2.fromValues(0, 1);  // this is the current front direction of the object
-//    this.mSpeed = 0;
 
     this.mCellX = cellX;
     this.mCellY = cellY;
@@ -22,29 +19,28 @@ function GridObject(renderableObj, grid, cellX, cellY, width, height, isLocked) 
     
     this.mGrid = grid;
     
-    this.mGridObj = new SpriteRenderable(renderableObj);
+    this.mGridObj = obj;
     
-    this.mGridObj.setColor([1, 1, 1, 0]);
+    //this.mGridObj.setColor([1, 1, 1, 0]);
     
     this.mGridObj.getXform().setPosition(this.mGrid.getWCFromCell(cellX, cellY)[0]
                                     ,this.mGrid.getWCFromCell(cellX, cellY)[1]);
                                     
-    this.mGridObj.getXform().setSize(this.mGrid.getCellWidth() * width
-                                    ,this.mGrid.getCellHeight() * height);
+    //this.mGridObj.getXform().setSize(this.mGrid.getCellWidth() * width
+                                    //,this.mGrid.getCellHeight() * height);
     
     this.mIsLocked = isLocked;
     
-    this.mGrid.addObj(this.mGridObj);
+    this.mGrid.addObj(this);
 }
 
 GridObject.prototype.draw = function (aCamera) {
-    console.log("called");
     if (this.isVisible()) {
-        this.mRenderComponent.draw(aCamera);
+        this.mGridObj.draw(aCamera);
     }
 };
 
-GridObject.prototype.getPos = function () { return this.mGridPos; };
+GridObject.prototype.getPos = function () { return [this.mCellX, this.mCellY]; };
 
 GridObject.prototype.setPos = function (cellX, cellY) {
     this.mPosition = new vec2.fromValues(cellX, cellY);

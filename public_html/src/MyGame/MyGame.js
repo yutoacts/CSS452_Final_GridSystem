@@ -13,8 +13,7 @@
 
 function MyGame() 
 {
-    
-    this.kHeroSprite = "assets/favicon.png";
+    this.kMinionSprite = "assets/SpriteSheet.png";
     
     // The camera to view the scene
     this.mCamera = null;
@@ -27,12 +26,12 @@ gEngine.Core.inheritPrototype(MyGame, Scene);
 
 MyGame.prototype.loadScene = function () 
 {
-    gEngine.Textures.loadTexture(this.kHeroSprite);
+    gEngine.Textures.loadTexture(this.kMinionSprite);
 };
 
 MyGame.prototype.unloadScene = function () 
 {
-    gEngine.Textures.unloadTexture(this.kHeroSprite);
+    gEngine.Textures.unloadTexture(this.kMinionSprite);
 };
 
 MyGame.prototype.initialize = function () 
@@ -54,7 +53,8 @@ MyGame.prototype.initialize = function ()
     this.mGrid = new Grid(5, 5, 25, 25);
     this.mGrid.setDraw(true);
     
-    this.mHero = new GridObject(this.kHeroSprite, this.mGrid,
+    this.mHero = new Hero(this.kMinionSprite, 35, 50);
+    this.mHero = new GridObject(this.mHero, this.mGrid,
                                 0, 0, 
                                 1, 1, true);
 };

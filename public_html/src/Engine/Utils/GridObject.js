@@ -43,7 +43,10 @@ GridObject.prototype.draw = function (aCamera) {
 GridObject.prototype.getPos = function () { return [this.mCellX, this.mCellY]; };
 
 GridObject.prototype.setPos = function (cellX, cellY) {
-    this.mPosition = new vec2.fromValues(cellX, cellY);
+    this.mCellX = cellX;
+    this.mCellY = cellY;
+    this.mGridObj.getXform().setPosition(this.mGrid.getWCFromCell(cellX, cellY)[0]
+                                    ,this.mGrid.getWCFromCell(cellX, cellY)[1]);
 };
 
 GridObject.prototype.getSize = function () { return vec2.fromValues(this.mWidth, this.mHeight); };

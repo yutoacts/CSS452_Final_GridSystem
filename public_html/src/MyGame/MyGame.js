@@ -78,6 +78,26 @@ MyGame.prototype.update = function ()
     var msg = "Status: ";
     var echo = "";
     
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W)) 
+    {
+        this.mHero.setPos(this.mHero.getPos()[0],this.mHero.getPos()[1] + 1);
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.A)) 
+    {
+        this.mHero.setPos(this.mHero.getPos()[0] - 1,this.mHero.getPos()[1]);
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S)) 
+    {
+        this.mHero.setPos(this.mHero.getPos()[0],this.mHero.getPos()[1] - 1);
+    }
+        
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D)) 
+    {
+        this.mHero.setPos(this.mHero.getPos()[0] + 1,this.mHero.getPos()[1]);
+    }
+    
     this.mGrid.update();
     
     echo += "Grid Size: " + this.mGrid.getNumCols() + "x" + this.mGrid.getNumRows() + " with ";

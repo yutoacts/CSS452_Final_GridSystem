@@ -34,7 +34,7 @@ function GridObject(renderableObj, grid, cellX, cellY, width, height, isLocked) 
     
     this.mIsLocked = isLocked;
     
-    this.mGrid.addObj(this.mGridObj);
+    this.mGrid.addObj(this);
 }
 
 GridObject.prototype.draw = function (aCamera) {

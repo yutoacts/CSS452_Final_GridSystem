@@ -80,22 +80,30 @@ MyGame.prototype.update = function ()
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W)) 
     {
-        this.mHero.setPos(this.mHero.getPos()[0],this.mHero.getPos()[1] + 1);
+        if(this.mHero.getPos()[1] + 1 < this.mGrid.getNumCols()){
+            this.mHero.setPos(this.mHero.getPos()[0],this.mHero.getPos()[1] + 1);
+        }  
     }
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.A)) 
     {
-        this.mHero.setPos(this.mHero.getPos()[0] - 1,this.mHero.getPos()[1]);
+        if(this.mHero.getPos()[0] - 1 >= 0){
+            this.mHero.setPos(this.mHero.getPos()[0] - 1,this.mHero.getPos()[1]);
+        }
     }
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S)) 
     {
-        this.mHero.setPos(this.mHero.getPos()[0],this.mHero.getPos()[1] - 1);
+        if(this.mHero.getPos()[1] - 1 >= 0){
+            this.mHero.setPos(this.mHero.getPos()[0],this.mHero.getPos()[1] - 1);
+        }
     }
         
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D)) 
     {
-        this.mHero.setPos(this.mHero.getPos()[0] + 1,this.mHero.getPos()[1]);
+        if(this.mHero.getPos()[0] + 1 < this.mGrid.getNumRows()){
+            this.mHero.setPos(this.mHero.getPos()[0] + 1,this.mHero.getPos()[1]);
+        } 
     }
     
     this.mGrid.update();

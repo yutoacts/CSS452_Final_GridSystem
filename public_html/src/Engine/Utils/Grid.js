@@ -67,31 +67,45 @@ Grid.prototype.draw = function(aCamera)
 Grid.prototype.getObjFromCell = function(cellX, cellY) { return this.mGridObjects[cellX][cellY]; };
 Grid.prototype.getWCFromCell = function(cellX, cellY)
 {
-    // Get origin of Grid (lower left)
-    var originX = this.mXform.getXPos() - (this.getTotalWidth() / 2);
-    var originY = this.mXform.getYPos() - (this.getTotalHeight() / 2);
-    
-    // Calculate WC based on origin, cell position, and cell size
-    var objX = (originX + (cellX * this.mCellSizeX)) + (this.mCellSizeX / 2);
-    var objY = (originY + (cellY * this.mCellSizeY)) + (this.mCellSizeY / 2);
-    
-    return [objX, objY];
+    // Check valid cell values
+    if(cellX >= 0 && cellY >= 0 && cellX < this.mGridSizeX && cellY < this.mGridSizeY)
+    {
+        // Get origin of Grid (lower left)
+        var originX = this.mXform.getXPos() - (this.getTotalWidth() / 2);
+        var originY = this.mXform.getYPos() - (this.getTotalHeight() / 2);
+
+        // Calculate WC based on origin, cell position, and cell size
+        var objX = (originX + (cellX * this.mCellSizeX)) + (this.mCellSizeX / 2);
+        var objY = (originY + (cellY * this.mCellSizeY)) + (this.mCellSizeY / 2);
+
+        return vec2.fromValues(objX, objY);
+    }
 };
 
 Grid.prototype.addObj = function (obj) 
 {
-    var objPos = obj.getPos();
-    this.mGridObjects[objPos[0]][objPos[1]] = obj;
+    if(obj !== undefined)
+    {
+        var objectPos = obj.getPos();
+        this.mGridObjects[objectPos[0]][objectPos[1]] = obj;
+    }
 };
 
 Grid.prototype.removeObj = function (obj) 
 {
-    // TODO: Remove object from GridObjects if found
+    // Remove object from GridObjects with position
+    if(obj !== undefined)
+    {
+        var x = obj.getPos()[0];
+        var y = obj.getPos()[1];
+
+        this.mGridObjects[x].splice(y, 1);
+    }
 };
 
 Grid.prototype.getXform = function() { return this.mXform; };
-Grid.prototype.getNumRows = function () { return this.mGridSizeY; };
-Grid.prototype.getNumCols = function () { return this.mGridSizeX; };
+Grid.prototype.getNumRows = function () { return this.mGridSizeY; };    // get Y size
+Grid.prototype.getNumCols = function () { return this.mGridSizeX; };    // get X size
 Grid.prototype.getTotalWidth = function () { return (this.mGridSizeX * this.mCellSizeX); };
 Grid.prototype.getTotalHeight = function () { return (this.mGridSizeY * this.mCellSizeY); };
 Grid.prototype.getCellWidth = function () { return this.mCellSizeX; };
@@ -110,6 +124,9 @@ Grid.prototype.setDraw = function(bool)
 // Helper function for setting vertices of Grid lines
 Grid.prototype._setGridLines = function()
 {
+    this.mGridXLines = [];
+    this.mGridYLines = [];
+    
     // Get origin of Grid (lower left)
     var originX = this.mXform.getXPos() - (this.getTotalWidth() / 2);
     var originY = this.mXform.getYPos() - (this.getTotalHeight() / 2);

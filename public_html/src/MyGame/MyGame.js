@@ -57,6 +57,8 @@ MyGame.prototype.initialize = function ()
     this.mHero = new GridObject(this.mHero, this.mGrid,
                                 0, 0, 
                                 1, 1, true);
+                                
+    //this.mPatrol = new Patrol(this.kMinionSprite, 30, 30);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -80,7 +82,7 @@ MyGame.prototype.update = function ()
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W)) 
     {
-        if(this.mHero.getPos()[1] + 1 < this.mGrid.getNumCols()){
+        if(this.mHero.getPos()[1] + 1 < this.mGrid.getNumRows()){
             this.mHero.setPos(this.mHero.getPos()[0],this.mHero.getPos()[1] + 1);
         }  
     }
@@ -101,7 +103,7 @@ MyGame.prototype.update = function ()
         
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D)) 
     {
-        if(this.mHero.getPos()[0] + 1 < this.mGrid.getNumRows()){
+        if(this.mHero.getPos()[0] + 1 < this.mGrid.getNumCols()){
             this.mHero.setPos(this.mHero.getPos()[0] + 1,this.mHero.getPos()[1]);
         } 
     }
@@ -110,6 +112,7 @@ MyGame.prototype.update = function ()
     
     echo += "Grid Size: " + this.mGrid.getNumCols() + "x" + this.mGrid.getNumRows() + " with ";
     echo += "Cell Size: " + this.mGrid.getCellWidth() + "x" + this.mGrid.getCellHeight() + " ";
+    echo += "Object: " + this.mHero.getPos();
     
     msg += echo;
     this.mMsg.setText(msg);

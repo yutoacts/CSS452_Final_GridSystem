@@ -9,65 +9,90 @@
 
 "use strict";
 
-function GridObject(obj, grid, cellX, cellY, width, height, isLocked) {
-    this.mVisible = true;
-
+function GridObject(obj, grid, cellX, cellY, cellSizeX, cellSizeY, isLocked) 
+{
     this.mCellX = cellX;
     this.mCellY = cellY;
-    this.mGridWidth = width;
-    this.mGridHeight = height;
+    this.mCellSizeX = cellSizeX;
+    this.mCellSizeY = cellSizeY;
     
     this.mGrid = grid;
+    this.mObj = obj;
     
-    this.mGridObj = obj;
-    
-    //this.mGridObj.setColor([1, 1, 1, 0]);
-    
-    this.mGridObj.getXform().setPosition(this.mGrid.getWCFromCell(cellX, cellY)[0]
+    // Set position
+    this.mObj.getXform().setPosition(this.mGrid.getWCFromCell(cellX, cellY)[0]
                                     ,this.mGrid.getWCFromCell(cellX, cellY)[1]);
-                                    
-    //this.mGridObj.getXform().setSize(this.mGrid.getCellWidth() * width
-                                    //,this.mGrid.getCellHeight() * height);
+    
+    // Set size           
+    //this.mObj.getXform().setSize(this.mGrid.getCellWidth() * cellSizeX, 
+    //                            ,this.mGrid.getCellHeight() * cellSizeY);
     
     this.mIsLocked = isLocked;
+    this.mVisible = true;
     
     this.mGrid.addObj(this);
 }
 
-GridObject.prototype.draw = function (aCamera) {
-    if (this.isVisible()) {
-        this.mGridObj.draw(aCamera);
+GridObject.prototype.draw = function (aCamera) 
+{
+    if (this.isVisible()) 
+    {
+        this.mObj.draw(aCamera);
     }
 };
 
-GridObject.prototype.getPos = function () { return [this.mCellX, this.mCellY]; };
-
-GridObject.prototype.setPos = function (cellX, cellY) {
-    this.mCellX = cellX;
-    this.mCellY = cellY;
-    this.mGridObj.getXform().setPosition(this.mGrid.getWCFromCell(cellX, cellY)[0]
-                                    ,this.mGrid.getWCFromCell(cellX, cellY)[1]);
+GridObject.prototype.getPos = function () { return vec2.fromValues(this.mCellX, this.mCellY); };
+GridObject.prototype.setPos = function (cellX, cellY) 
+{
+    // Check valid cell values
+    if(cellX >= 0 && cellY >= 0 && cellX < this.mGrid.getNumCols() && cellY < this.mGrid.getNumRows())
+    {
+        // Check if slot is occupied
+        if(this.mGrid.getObjFromCell(cellX, cellY) === undefined)
+        {
+            this.mGrid.removeObj(this);
+            this.mCellX = cellX;
+            this.mCellY = cellY;
+            this.mObj.getXform().setPosition(this.mGrid.getWCFromCell(cellX, cellY)[0]
+                                            ,this.mGrid.getWCFromCell(cellX, cellY)[1]);
+            this.mGrid.addObj(this);
+        }
+    }
 };
 
-GridObject.prototype.getSize = function () { return vec2.fromValues(this.mWidth, this.mHeight); };
-
-GridObject.prototype.setSize = function(width, height) {
-    this.mWidth = width;
-    this.mHeight = height;
-    this.mRenderComponent.getXform().setSize(this.mGrid.getCellWidth() * width, this.mGrid.getCellHeight() * height);
-};
+GridObject.prototype.getSize = function () { return vec2.fromValues(this.mCellSizeX, this.mCellSizeY); };
+/*GridObject.prototype.setSize = function(cellSizeX, cellSizeY) 
+{
+    this.mCellSizeX = cellSizeX;
+    this.mCellSizeY = cellSizeY;
+    this.mObj.getXform().setSize(this.mGrid.getCellWidth() * cellSizeX, this.mGrid.getCellHeight() * cellSizeY);
+};*/
 
 GridObject.prototype.lockObject = function() { this.mIsLocked = true; };
-
 GridObject.prototype.unlockObject = function() { this.mIsLocked = false; };
 
+GridObject.prototype.getXform = function () { return this.mObj.getXform(); };
 
-
-GridObject.prototype.getXform = function () { return this.mRenderComponent.getXform(); };
-GridObject.prototype.getBBox = function () {
+GridObject.prototype.getBBox = function () 
+{
     var xform = this.getXform();
     var b = new BoundingBox(xform.getPosition(), xform.getWidth(), xform.getHeight());
     return b;
+};
+
+GridObject.prototype.setGameObject = function(obj)
+{
+    if(obj !== undefined)
+    {
+        this.mObj = obj;
+        this.setPos(this.getPos()[0], this.getPos()[1]);
+        //this.setSize(this.getSize()[0], this.getSize()[1]);
+    }
+};
+
+GridObject.prototype.getGameObject = function()
+{
+    return this.mObj;
 };
 
 GridObject.prototype.setVisibility = function (f) { this.mVisible = f; };

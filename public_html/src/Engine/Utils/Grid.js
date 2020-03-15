@@ -8,14 +8,12 @@
 /* find out more about jslint: http://www.jslint.com/help.html */
 "use strict";
 
-
 function Grid(gridSizeX, gridSizeY, cellSizeX, cellSizeY) 
 {
     this.mGridSizeX = gridSizeX;    // size of Grid horizontally - cols
     this.mGridSizeY = gridSizeY;    // size of Grid vertically - rows
     this.mCellSizeX = cellSizeX;    // size of each Cell horizontally - width
     this.mCellSizeY = cellSizeY;    // size of each Cell vertically - height
-    this.mGridObjects = [];         // 2D array of GridObjects
     this.mXform = new Transform();  // Grid Xform for manipulation/position
     
     this.mShowGrid = false;         // boolean for drawing Grid
@@ -23,18 +21,15 @@ function Grid(gridSizeX, gridSizeY, cellSizeX, cellSizeY)
     this.mGridYLines = [];          // array for Grid vertical lines
     this.mGridColor = [0, 0, 0, 1]; // color for Grid lines
     
-    this.initialize();
-}
-
-Grid.prototype.initialize = function()
-{
+    this.mGridObjects = [];         // 2D array of GridObjects
+    
     // Initialize 2D Array
     for(var i = 0; i < this.mGridSizeX; i++)
     {
         var GridObjectsY = [];
         this.mGridObjects.push(GridObjectsY);
     }
-};
+}
 
 Grid.prototype.update = function()
 {
@@ -80,6 +75,8 @@ Grid.prototype.getWCFromCell = function(cellX, cellY)
 
         return vec2.fromValues(objX, objY);
     }
+    
+    return vec2.fromValues(Number.MAX_SAFE_INTEGER, Number.MAX_SAFE_INTEGER);
 };
 
 Grid.prototype.addObj = function (obj) 

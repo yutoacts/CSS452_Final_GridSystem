@@ -137,8 +137,9 @@ GridObject.prototype.getClosestCell = function ()
         {
             var cellPos = this.mGrid.getWCFromCell(i,j);
             
-            var distance = (objectPos[0] - cellPos[0]) ^ 2
-                         + (objectPos[1] - cellPos[1]) ^ 2;
+            var distance = Math.pow((objectPos[0] - cellPos[0]), 2)
+                         + Math.pow((objectPos[1] - cellPos[1]), 2);
+            
             
             if(distance < minDist)
             {

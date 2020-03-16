@@ -1,6 +1,6 @@
 /*
- * File: MyGame.js 
- * This is the logic of our game. 
+ * File: MyGame.js
+ * This is the logic of our game.
  */
 
 /*jslint node: true, vars: true */
@@ -11,10 +11,10 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function MyGame() 
+function MyGame()
 {
     this.kMinionSprite = "assets/SpriteSheet.png";
-    
+
     // The camera to view the scene
     this.mCamera = null;
     this.mGrid = null;
@@ -25,17 +25,17 @@ function MyGame()
 
 gEngine.Core.inheritPrototype(MyGame, Scene);
 
-MyGame.prototype.loadScene = function () 
+MyGame.prototype.loadScene = function ()
 {
     gEngine.Textures.loadTexture(this.kMinionSprite);
 };
 
-MyGame.prototype.unloadScene = function () 
+MyGame.prototype.unloadScene = function ()
 {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
 };
 
-MyGame.prototype.initialize = function () 
+MyGame.prototype.initialize = function ()
 {
     // Step A: set up the cameras
     this.mCamera = new Camera(
@@ -50,18 +50,19 @@ MyGame.prototype.initialize = function ()
     this.mMsg.setColor([0, 0, 0, 1]);
     this.mMsg.getXform().setPosition(-96, -70);
     this.mMsg.setTextHeight(4);
-    
+
     this.mGrid = new Grid(5, 5, 25, 25);
     this.mGrid.setDraw(true);
-    
+
     this.mHero = new Hero(this.kMinionSprite, 35, 50);
     this.mHero = new GridObject(this.mHero, this.mGrid,
-                                0, 0, 
-                                1, 1, true);
-                                
+                                0, 0,
+                                2, 2, true);
+    this.mHero.getGameObject().getXform().incSizeBy(10);
+
     this.mPatrol = new Patrol(this.kMinionSprite, 30, 30);
     this.mPatrol = new GridObject(this.mPatrol, this.mGrid,
-                            3, 3, 
+                            3, 3,
                             1, 1, true);
 };
 
@@ -79,75 +80,85 @@ MyGame.prototype.draw = function ()
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
-MyGame.prototype.update = function () 
+MyGame.prototype.update = function ()
 {
     var msg = "Status: ";
     var echo = "";
-    
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W)) 
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W))
     {
         if(this.mHero.getPos()[1] + 1 < this.mGrid.getNumRows()){
             this.mHero.gridMovement(this.mHero.getPos()[0],this.mHero.getPos()[1] + 1);
-        }  
+        }
     }
-    
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.A)) 
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.A))
     {
         if(this.mHero.getPos()[0] - 1 >= 0){
             this.mHero.gridMovement(this.mHero.getPos()[0] - 1,this.mHero.getPos()[1]);
         }
     }
-    
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S)) 
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S))
     {
         if(this.mHero.getPos()[1] - 1 >= 0){
             this.mHero.gridMovement(this.mHero.getPos()[0],this.mHero.getPos()[1] - 1);
         }
     }
-        
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D)) 
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D))
     {
         if(this.mHero.getPos()[0] + 1 < this.mGrid.getNumCols()){
             this.mHero.gridMovement(this.mHero.getPos()[0] + 1,this.mHero.getPos()[1]);
-        } 
+        }
     }
-    
+
     var xform = this.mHero.getXform();
-    
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up)) 
+
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up))
     {
         xform.setPosition(xform.getPosition()[0],xform.getPosition()[1] + 1.0);
         this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
     }
-    
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left)) 
+
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left))
     {
         xform.setPosition(xform.getPosition()[0] - 1.0,xform.getPosition()[1]);
     }
-    
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Down)) 
+
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Down))
     {
         xform.setPosition(xform.getPosition()[0],xform.getPosition()[1] - 1.0);
     }
-        
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right)) 
+
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right))
     {
         xform.setPosition(xform.getPosition()[0] + 1.0,xform.getPosition()[1]);
     }
-    
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space)) 
+
+    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space))
     {
         console.log("Pressed");
         this.mHero.gridMovement(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
     }
-    
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q))
+    {
+        this.mHero.setSize(3, 3);
+    }
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.R))
+    {
+        this.mHero.setSize(1, 1);
+    }
+
     this.mGrid.update();
-    
+
     echo += "Grid Size: " + this.mGrid.getNumCols() + "x" + this.mGrid.getNumRows() + " with ";
     echo += "Cell Size: " + this.mGrid.getCellWidth() + "x" + this.mGrid.getCellHeight() + " ";
     echo += "Hero: " + this.mHero.getPos() + " ";
     echo += "Patrol: " + this.mPatrol.getPos() + " ";
-    
+
     msg += echo;
     this.mMsg.setText(msg);
 };

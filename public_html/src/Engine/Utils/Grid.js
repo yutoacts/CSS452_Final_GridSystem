@@ -59,8 +59,9 @@ Grid.prototype.draw = function(aCamera)
                     var square = new Renderable();
                     square.setColor([1, 0, 0, 0.25]);
                     var objectPos = this.getWCFromCell(i, j);
-                    square.getXform().setPosition(objectPos[0], objectPos[1]);
-                    square.getXform().setSize(this.mCellSizeX, this.mCellSizeY);
+                    var objectSize = obj.getSize();
+                    square.getXform().setPosition(objectPos[0] + ((this.mCellSizeX / 2) * (objectSize[0] - 1)), objectPos[1] + ((this.mCellSizeY / 2) * (objectSize[1] - 1)));
+                    square.getXform().setSize(this.mCellSizeX * objectSize[0], this.mCellSizeY * objectSize[1]);
                     square.draw(aCamera);
                 }
                 
@@ -110,7 +111,6 @@ Grid.prototype.removeObj = function (obj)
         var x = objectPos[0];
         var y = objectPos[1];
 
-//        this.mGridObjects[x].splice(y, 1);
         this.mGridObjects[x][y] = undefined;
 
         this.mCount--;

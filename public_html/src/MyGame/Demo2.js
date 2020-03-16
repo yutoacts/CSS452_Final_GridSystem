@@ -61,7 +61,7 @@ Demo2.prototype.initialize = function ()
     this.mTitle.setTextHeight(8);
     this.mTitle.setText("Demo 2");
 
-    this.mGrid = new Grid(5, 5, 25, 25);
+    this.mGrid = new Grid(10, 10, 15, 15);
     this.mGrid.setDraw(true);
 
     this.mHero = new Hero(this.kMinionSprite, 35, 50);

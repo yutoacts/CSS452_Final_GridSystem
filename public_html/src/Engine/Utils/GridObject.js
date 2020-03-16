@@ -99,8 +99,17 @@ GridObject.prototype.setSize = function(cellSizeX, cellSizeY)
 };
 
 GridObject.prototype.isLocked = function() { return this.mIsLocked;};
-GridObject.prototype.lockObject = function() { this.mIsLocked = true; };
-GridObject.prototype.unlockObject = function() { this.mIsLocked = false; };
+
+GridObject.prototype.lockObject = function()
+{
+    this.mIsLocked = true;
+    this.setPos(this.mCellX,this.mCellY);
+};
+GridObject.prototype.unlockObject = function()
+{
+    this.mIsLocked = false;
+    this.setPos(this.mCellX,this.mCellY);
+};
 
 GridObject.prototype.getParent = function () { return this.mParent; };
 GridObject.prototype.getChildren = function () { return this.mChildren; };

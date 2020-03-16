@@ -64,6 +64,9 @@ MyGame.prototype.initialize = function ()
     this.mPatrol = new GridObject(this.mPatrol, this.mGrid,
                             3, 3,
                             1, 1, true);
+                            
+    this.mGrid.addObj(this.mHero);
+    this.mGrid.addObj(this.mPatrol);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -161,6 +164,7 @@ MyGame.prototype.update = function ()
     echo += "Cell Size: " + this.mGrid.getCellWidth() + "x" + this.mGrid.getCellHeight() + " ";
     echo += "Hero: " + this.mHero.getPos() + " ";
     echo += "Patrol: " + this.mPatrol.getPos() + " ";
+    echo += "Objects: " + this.mGrid.getNumObjects() + " ";
 
     msg += echo;
     this.mMsg.setText(msg);

@@ -57,11 +57,23 @@ Grid.prototype.draw = function(aCamera)
                 if(this.mShowGrid)
                 {
                     var square = new Renderable();
-                    square.setColor([1, 0, 0, 0.25]);
-                    var objectPos = this.getWCFromCell(i, j);
-                    var objectSize = obj.getSize();
-                    square.getXform().setPosition(objectPos[0] + ((this.mCellSizeX / 2) * (objectSize[0] - 1)), objectPos[1] + ((this.mCellSizeY / 2) * (objectSize[1] - 1)));
-                    square.getXform().setSize(this.mCellSizeX * objectSize[0], this.mCellSizeY * objectSize[1]);
+                    var objPos = obj.getPos();
+                    var objPosWC = this.getWCFromCell(i, j);
+                    // Draw green for origin/parent cells
+                    if(objPos[0] === i && objPos[1] === j)
+                    {
+                        square.setColor([0, 1, 0, 0.25]);
+                    }
+                    // Draw red for child cells
+                    else
+                    {
+                        square.setColor([1, 0, 0, 0.25]);
+                    }
+                    //var objectSize = obj.getSize();
+                    //square.getXform().setPosition(objPos[0] + ((this.mCellSizeX / 2) * (objectSize[0] - 1)), objPos[1] + ((this.mCellSizeY / 2) * (objectSize[1] - 1)));
+                    //square.getXform().setSize(this.mCellSizeX * objectSize[0], this.mCellSizeY * objectSize[1]);
+                    square.getXform().setPosition(objPosWC[0], objPosWC[1]);
+                    square.getXform().setSize(this.mCellSizeX, this.mCellSizeY);
                     square.draw(aCamera);
                 }
                 
@@ -72,7 +84,17 @@ Grid.prototype.draw = function(aCamera)
 };
 
 // <editor-fold desc="Public Methods">
-Grid.prototype.getObjFromCell = function(cellX, cellY) { return this.mGridObjects[cellX][cellY]; };
+Grid.prototype.getObjFromCell = function(cellX, cellY) 
+{ 
+    if(this.mGridObjects[cellX][cellY] !== undefined)
+    {
+        if(this.mGridObjects[cellX][cellY].getParent() !== undefined)
+        {
+            return this.mGridObjects[cellX][cellY].getParent();
+        }
+    }
+    return this.mGridObjects[cellX][cellY]; 
+};
 Grid.prototype.getWCFromCell = function(cellX, cellY)
 {
     // Check valid cell values
@@ -85,7 +107,7 @@ Grid.prototype.getWCFromCell = function(cellX, cellY)
         // Calculate WC based on origin, cell position, and cell size
         var objX = (originX + (cellX * this.mCellSizeX)) + (this.mCellSizeX / 2);
         var objY = (originY + (cellY * this.mCellSizeY)) + (this.mCellSizeY / 2);
-
+        
         return vec2.fromValues(objX, objY);
     }
     
@@ -94,26 +116,38 @@ Grid.prototype.getWCFromCell = function(cellX, cellY)
 
 Grid.prototype.addObj = function (obj) 
 {
+    // Add GridObject to Grid
     if(obj !== undefined)
     {
-        var objectPos = obj.getPos();
-        this.mGridObjects[objectPos[0]][objectPos[1]] = obj;
-        this.mCount++;
+        var objPos = obj.getPos();
+        // Add children if GridObject is a parent
+        if(obj.getParent() === undefined)
+        {
+            obj.addChildren();
+            this.mCount++;
+        }
+        // Add GridObject in 2D Array
+        this.mGridObjects[objPos[0]][objPos[1]] = obj;
     }
 };
 
 Grid.prototype.removeObj = function (obj) 
 {
-    // Remove object from GridObjects with position
+    // Remove GridObject from Grid
     if(obj !== undefined)
     {
-        var objectPos = obj.getPos();
-        var x = objectPos[0];
-        var y = objectPos[1];
-
+        var objPos = obj.getPos();
+        // Remove children if object is a parent
+        if(obj.getChildren().length !== 0)
+        {
+            obj.removeChildren();
+            this.mCount--;
+        }
+        
+        var x = objPos[0];
+        var y = objPos[1];
+        // Remove GridObject from 2D Array
         this.mGridObjects[x][y] = undefined;
-
-        this.mCount--;
     }
 };
 

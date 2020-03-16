@@ -20,6 +20,7 @@ function MyGame()
     this.mGrid = null;
     this.mMsg = null;
     this.mHero = null;
+    this.mPatrol = null;
 }
 
 gEngine.Core.inheritPrototype(MyGame, Scene);
@@ -58,7 +59,10 @@ MyGame.prototype.initialize = function ()
                                 0, 0, 
                                 1, 1, true);
                                 
-    //this.mPatrol = new Patrol(this.kMinionSprite, 30, 30);
+    this.mPatrol = new Patrol(this.kMinionSprite, 30, 30);
+    this.mPatrol = new GridObject(this.mPatrol, this.mGrid,
+                            3, 3, 
+                            1, 1, true);
 };
 
 // This is the draw function, make sure to setup proper drawing environment, and more
@@ -112,7 +116,8 @@ MyGame.prototype.update = function ()
     
     echo += "Grid Size: " + this.mGrid.getNumCols() + "x" + this.mGrid.getNumRows() + " with ";
     echo += "Cell Size: " + this.mGrid.getCellWidth() + "x" + this.mGrid.getCellHeight() + " ";
-    echo += "Object: " + this.mHero.getPos();
+    echo += "Hero: " + this.mHero.getPos() + " ";
+    echo += "Patrol: " + this.mPatrol.getPos() + " ";
     
     msg += echo;
     this.mMsg.setText(msg);

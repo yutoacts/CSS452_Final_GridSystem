@@ -16,6 +16,7 @@ function Grid(gridSizeX, gridSizeY, cellSizeX, cellSizeY)
     this.mCellSizeY = cellSizeY;    // size of each Cell vertically - height
     this.mXform = new Transform();  // Grid Xform for manipulation/position
     
+    this.mCount = 0;
     this.mShowGrid = false;         // boolean for drawing Grid
     this.mGridXLines = [];          // array for Grid horizontal lines
     this.mGridYLines = [];          // array for Grid vertical lines
@@ -52,6 +53,17 @@ Grid.prototype.draw = function(aCamera)
             var obj = this.getObjFromCell(i, j);
             if(obj !== undefined)
             {
+                // Draw occupied slots
+                if(this.mShowGrid)
+                {
+                    var square = new Renderable();
+                    var pos = this.getWCFromCell(obj.getPos()[0], obj.getPos()[1]);
+                    square.setColor([1, 0, 0, 0.25]);
+                    square.getXform().setPosition(pos[0], pos[1]);
+                    square.getXform().setSize(this.mCellSizeX, this.mCellSizeY);
+                    square.draw(aCamera);
+                }
+                
                 obj.draw(aCamera);
             }
         }
@@ -85,6 +97,7 @@ Grid.prototype.addObj = function (obj)
     {
         var objectPos = obj.getPos();
         this.mGridObjects[objectPos[0]][objectPos[1]] = obj;
+        this.mCount++;
     }
 };
 
@@ -97,10 +110,12 @@ Grid.prototype.removeObj = function (obj)
         var y = obj.getPos()[1];
 
         this.mGridObjects[x].splice(y, 1);
+        this.mCount--;
     }
 };
 
 Grid.prototype.getXform = function() { return this.mXform; };
+Grid.prototype.getNumObjects = function () { return this.mCount; };
 Grid.prototype.getNumRows = function () { return this.mGridSizeY; };    // get Y size
 Grid.prototype.getNumCols = function () { return this.mGridSizeX; };    // get X size
 Grid.prototype.getTotalWidth = function () { return (this.mGridSizeX * this.mCellSizeX); };

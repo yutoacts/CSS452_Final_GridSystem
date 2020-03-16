@@ -43,30 +43,31 @@ GridObject.prototype.draw = function (aCamera)
 
 GridObject.prototype.getPos = function () { return vec2.fromValues(this.mCellX, this.mCellY); };
 GridObject.prototype.setPos = function (cellX, cellY) 
-{
+{ 
     // Check valid cell values
     if(cellX >= 0 && cellY >= 0 && cellX < this.mGrid.getNumCols() && cellY < this.mGrid.getNumRows())
     {
         // Check if slot is occupied
         if(this.mGrid.getObjFromCell(cellX, cellY) === undefined)
         {
-            this.mGrid.removeObj(this);
             this.mCellX = cellX;
             this.mCellY = cellY;
             this.mObj.getXform().setPosition(this.mGrid.getWCFromCell(cellX, cellY)[0]
                                             ,this.mGrid.getWCFromCell(cellX, cellY)[1]);
-            this.mGrid.addObj(this);
+            return true;
         }
+        return false;
     }
+    return false;
 };
 
 GridObject.prototype.getSize = function () { return vec2.fromValues(this.mCellSizeX, this.mCellSizeY); };
-/*GridObject.prototype.setSize = function(cellSizeX, cellSizeY) 
+GridObject.prototype.setSize = function(cellSizeX, cellSizeY) 
 {
     this.mCellSizeX = cellSizeX;
     this.mCellSizeY = cellSizeY;
-    this.mObj.getXform().setSize(this.mGrid.getCellWidth() * cellSizeX, this.mGrid.getCellHeight() * cellSizeY);
-};*/
+    //this.mObj.getXform().setSize(this.mGrid.getCellWidth() * cellSizeX, this.mGrid.getCellHeight() * cellSizeY);
+};
 
 GridObject.prototype.lockObject = function() { this.mIsLocked = true; };
 GridObject.prototype.unlockObject = function() { this.mIsLocked = false; };

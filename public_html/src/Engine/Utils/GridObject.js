@@ -42,7 +42,16 @@ GridObject.prototype.draw = function (aCamera)
 };
 
 GridObject.prototype.getPos = function () { return vec2.fromValues(this.mCellX, this.mCellY); };
+
 GridObject.prototype.setPos = function (cellX, cellY) 
+{
+    this.mGrid.removeObj(this);
+    this.mCellX = cellX;
+    this.mCellY = cellY;
+    this.mGrid.addObj(this);
+};
+
+GridObject.prototype.gridMovement = function (cellX, cellY) 
 { 
     // Check valid cell values
     if(cellX >= 0 && cellY >= 0 && cellX < this.mGrid.getNumCols() && cellY < this.mGrid.getNumRows())
@@ -91,7 +100,7 @@ GridObject.prototype.setGameObject = function(obj)
     if(obj !== undefined)
     {
         this.mObj = obj;
-        this.setPos(this.getPos()[0], this.getPos()[1]);
+        this.gridMovement(this.getPos()[0], this.getPos()[1]);
         //this.setSize(this.getSize()[0], this.getSize()[1]);
     }
 };
@@ -100,6 +109,33 @@ GridObject.prototype.getGameObject = function()
 {
     return this.mObj;
 };
+
+GridObject.prototype.getClosestCell = function ()
+{
+    var objectPos = this.getXform().getPosition();
+    var minDist = Number.MAX_SAFE_INTEGER;
+    
+    var closestCell = vec2.fromValues(0, 0);
+    
+    for(var i = 0; i < this.mGrid.getNumRows(); i++)
+    {
+        for(var j = 0; j < this.mGrid.getNumCols(); j++)
+        {
+            var cellPos = this.mGrid.getWCFromCell(i,j);
+            
+            var distance = (objectPos[0] - cellPos[0]) ^ 2
+                         + (objectPos[1] - cellPos[1]) ^ 2;
+            
+            if(distance < minDist)
+            {
+                minDist = distance;
+                closestCell = vec2.fromValues(i, j);
+            }
+        }
+    }
+    
+    return closestCell;
+}
 
 GridObject.prototype.setVisibility = function (f) { this.mVisible = f; };
 GridObject.prototype.isVisible = function () { return this.mVisible; };

@@ -50,10 +50,12 @@ GridObject.prototype.setPos = function (cellX, cellY)
         // Check if slot is occupied
         if(this.mGrid.getObjFromCell(cellX, cellY) === undefined)
         {
+            this.mGrid.removeObj(this);
             this.mCellX = cellX;
             this.mCellY = cellY;
             this.mObj.getXform().setPosition(this.mGrid.getWCFromCell(cellX, cellY)[0]
                                             ,this.mGrid.getWCFromCell(cellX, cellY)[1]);
+            this.mGrid.addObj(this);
             return true;
         }
         return false;

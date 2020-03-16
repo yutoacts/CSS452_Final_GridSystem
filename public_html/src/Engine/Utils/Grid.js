@@ -57,9 +57,9 @@ Grid.prototype.draw = function(aCamera)
                 if(this.mShowGrid)
                 {
                     var square = new Renderable();
-                    var pos = this.getWCFromCell(obj.getPos()[0], obj.getPos()[1]);
                     square.setColor([1, 0, 0, 0.25]);
-                    square.getXform().setPosition(pos[0], pos[1]);
+                    var objectPos = this.getWCFromCell(i, j);
+                    square.getXform().setPosition(objectPos[0], objectPos[1]);
                     square.getXform().setSize(this.mCellSizeX, this.mCellSizeY);
                     square.draw(aCamera);
                 }
@@ -106,8 +106,9 @@ Grid.prototype.removeObj = function (obj)
     // Remove object from GridObjects with position
     if(obj !== undefined)
     {
-        var x = obj.getPos()[0];
-        var y = obj.getPos()[1];
+        var objectPos = obj.getPos();
+        var x = objectPos[0];
+        var y = objectPos[1];
 
         this.mGridObjects[x].splice(y, 1);
         this.mCount--;

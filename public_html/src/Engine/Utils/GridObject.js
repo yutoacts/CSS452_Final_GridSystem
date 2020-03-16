@@ -49,8 +49,7 @@ GridObject.prototype.setPos = function (cellX, cellY)
     {
         // Check if slot is occupied
         if(this.mGrid.getObjFromCell(cellX, cellY) === undefined)
-        {
-            
+        {  
             this.mGrid.removeObj(this);
             
             this.mCellX = cellX;

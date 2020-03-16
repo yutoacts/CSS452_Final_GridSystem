@@ -50,10 +50,16 @@ GridObject.prototype.setPos = function (cellX, cellY)
         // Check if slot is occupied
         if(this.mGrid.getObjFromCell(cellX, cellY) === undefined)
         {
+            
+            this.mGrid.removeObj(this);
+            
             this.mCellX = cellX;
             this.mCellY = cellY;
-            this.mObj.getXform().setPosition(this.mGrid.getWCFromCell(cellX, cellY)[0]
+            this.mObj.getXform().setPosition(this.mGrid.getWCFromCell(cellX, cellY)[0] 
                                             ,this.mGrid.getWCFromCell(cellX, cellY)[1]);
+                                            
+            this.mGrid.addObj(this);
+            
             return true;
         }
         return false;
@@ -77,7 +83,7 @@ GridObject.prototype.getXform = function () { return this.mObj.getXform(); };
 GridObject.prototype.getBBox = function () 
 {
     var xform = this.getXform();
-    var b = new BoundingBox(xform.getPosition(), xform.getWidth(), xform.getHeight());
+    var b = new BoundingBox(xform.getPosition(), this.mGrid.getCellWidth(), this.mGrid.getCellHeight());
     return b;
 };
 

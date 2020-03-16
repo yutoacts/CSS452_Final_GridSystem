@@ -33,6 +33,9 @@ Demo1.prototype.loadScene = function ()
 Demo1.prototype.unloadScene = function ()
 {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
+    
+    var nextLevel = new Demo2();  // load the next level
+    gEngine.Core.startScene(nextLevel);
 };
 
 Demo1.prototype.initialize = function ()
@@ -156,6 +159,12 @@ Demo1.prototype.update = function ()
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.R))
     {
         this.mHero.setSize(1, 1);
+    }
+    
+    // Scene Transition
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.H)) 
+    {
+        gEngine.GameLoop.stop();
     }
 
     this.mGrid.update();

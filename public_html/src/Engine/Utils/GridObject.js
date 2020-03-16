@@ -20,8 +20,8 @@ function GridObject(obj, grid, cellX, cellY, cellSizeX, cellSizeY, isLocked)
     this.mObj = obj;
     
     // Set position
-    this.mObj.getXform().setPosition(this.mGrid.getWCFromCell(cellX, cellY)[0]
-                                    ,this.mGrid.getWCFromCell(cellX, cellY)[1]);
+    var objPos = this.mGrid.getWCFromCell(cellX + ((cellSizeX - 1) * 0.5), cellY + ((cellSizeY - 1) * 0.5));
+    this.mObj.getXform().setPosition(objPos[0], objPos[1]);
     
     // Set size           
     //this.mObj.getXform().setSize(this.mGrid.getCellWidth() * cellSizeX, 
@@ -31,6 +31,14 @@ function GridObject(obj, grid, cellX, cellY, cellSizeX, cellSizeY, isLocked)
     this.mVisible = true;
     
     this.mGrid.addObj(this);
+    // Adding dummy objects that return a reference to this current GridObject in cell sizes larger than 1
+    /*for(var i = 0; i < cellSizeX; i++)
+    {
+        for(var i = 0; i < cellSizeX; i++)
+        {
+            var child = this;
+        }
+    }*/
 }
 
 GridObject.prototype.draw = function (aCamera) 
@@ -45,17 +53,17 @@ GridObject.prototype.getPos = function () { return vec2.fromValues(this.mCellX, 
 GridObject.prototype.setPos = function (cellX, cellY) 
 { 
     // Check valid cell values
-    if(cellX >= 0 && cellY >= 0 && cellX < this.mGrid.getNumCols() && cellY < this.mGrid.getNumRows())
+    if(cellX + (this.mCellSizeX - 1) >= 0 && cellY + (this.mCellSizeY - 1) >= 0 && cellX + (this.mCellSizeX - 1) < this.mGrid.getNumCols() && cellY + (this.mCellSizeY - 1) < this.mGrid.getNumRows())
     {
-        // Check if slot is occupied
-        if(this.mGrid.getObjFromCell(cellX, cellY) === undefined)
-        {  
+        // Check if slot is occupied or is itself (for resizing)
+        if(this.mGrid.getObjFromCell(cellX, cellY) === undefined || this.mGrid.getObjFromCell(cellX, cellY) === this)
+        {
             this.mGrid.removeObj(this);
             
             this.mCellX = cellX;
             this.mCellY = cellY;
-            this.mObj.getXform().setPosition(this.mGrid.getWCFromCell(cellX, cellY)[0] 
-                                            ,this.mGrid.getWCFromCell(cellX, cellY)[1]);
+            var objPos = this.mGrid.getWCFromCell(cellX + ((this.mCellSizeX - 1) * 0.5), cellY + ((this.mCellSizeX - 1) * 0.5));
+            this.mObj.getXform().setPosition(objPos[0], objPos[1]);
                                             
             this.mGrid.addObj(this);
             
@@ -69,9 +77,15 @@ GridObject.prototype.setPos = function (cellX, cellY)
 GridObject.prototype.getSize = function () { return vec2.fromValues(this.mCellSizeX, this.mCellSizeY); };
 GridObject.prototype.setSize = function(cellSizeX, cellSizeY) 
 {
+    var tempX = this.mCellSizeX;
+    var tempY = this.mCellSizeY;
     this.mCellSizeX = cellSizeX;
     this.mCellSizeY = cellSizeY;
-    //this.mObj.getXform().setSize(this.mGrid.getCellWidth() * cellSizeX, this.mGrid.getCellHeight() * cellSizeY);
+    if(!(this.setPos(this.mCellX, this.mCellY)))
+    {
+        this.mCellSizeX = tempX;
+        this.mCellSizeY = tempY;
+    }
 };
 
 GridObject.prototype.lockObject = function() { this.mIsLocked = true; };

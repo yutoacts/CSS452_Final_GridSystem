@@ -57,7 +57,8 @@ MyGame.prototype.initialize = function ()
     this.mHero = new Hero(this.kMinionSprite, 35, 50);
     this.mHero = new GridObject(this.mHero, this.mGrid,
                                 0, 0, 
-                                1, 1, true);
+                                2, 2, true);
+    this.mHero.getGameObject().getXform().incSizeBy(10);
                                 
     this.mPatrol = new Patrol(this.kMinionSprite, 30, 30);
     this.mPatrol = new GridObject(this.mPatrol, this.mGrid,
@@ -110,6 +111,16 @@ MyGame.prototype.update = function ()
         if(this.mHero.getPos()[0] + 1 < this.mGrid.getNumCols()){
             this.mHero.setPos(this.mHero.getPos()[0] + 1,this.mHero.getPos()[1]);
         } 
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q)) 
+    {
+        this.mHero.setSize(3, 3);
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.R)) 
+    {
+        this.mHero.setSize(1, 1);
     }
     
     this.mGrid.update();

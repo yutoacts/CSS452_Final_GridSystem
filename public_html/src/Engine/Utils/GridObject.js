@@ -90,7 +90,7 @@ GridObject.prototype.setSize = function(cellSizeX, cellSizeY)
     var tempY = this.mCellSizeY;
     this.mCellSizeX = cellSizeX;
     this.mCellSizeY = cellSizeY;
-    if(!(this.setPos(this.mCellX, this.mCellY)))
+    if(!(this.gridMovement(this.mCellX, this.mCellY)))
     {
         this.mCellSizeX = tempX;
         this.mCellSizeY = tempY;

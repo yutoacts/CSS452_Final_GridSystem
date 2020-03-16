@@ -138,7 +138,7 @@ Grid.prototype.removeObj = function (obj)
     {
         var objPos = obj.getPos();
         // Remove children if object is a parent
-        if(obj.getChildren().length !== 0)
+        if(obj.getParent() === undefined)
         {
             obj.removeChildren();
             this.mCount--;

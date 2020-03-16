@@ -128,25 +128,25 @@ Demo2.prototype.update = function ()
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up))
         {
             xform.setPosition(xform.getPosition()[0],xform.getPosition()[1] + 1.0);
-            this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+            this.mHero.gridMovement(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left))
         {
             xform.setPosition(xform.getPosition()[0] - 1.0,xform.getPosition()[1]);
-            this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+            this.mHero.gridMovement(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Down))
         {
             xform.setPosition(xform.getPosition()[0],xform.getPosition()[1] - 1.0);
-            this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+            this.mHero.gridMovement(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right))
         {
             xform.setPosition(xform.getPosition()[0] + 1.0,xform.getPosition()[1]);
-            this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+            this.mHero.gridMovement(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
         }
     }
     

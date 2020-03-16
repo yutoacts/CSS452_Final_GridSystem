@@ -33,15 +33,11 @@ function GridObject(obj, grid, cellX, cellY, cellSizeX, cellSizeY, isLocked)
     }
     
     this.mIsLocked = isLocked;
-    this.mVisible = true;
 }
 
 GridObject.prototype.draw = function (aCamera) 
 {
-    if (this.isVisible()) 
-    {
-        this.mObj.draw(aCamera);
-    }
+    this.mObj.draw(aCamera);
 };
 
 GridObject.prototype.getPos = function () { return vec2.fromValues(this.mCellX, this.mCellY); };
@@ -76,8 +72,12 @@ GridObject.prototype.gridMovement = function (cellX, cellY)
 
         this.mCellX = cellX;
         this.mCellY = cellY;
-        var objPos = this.mGrid.getWCFromCell(cellX + ((this.mCellSizeX - 1) * 0.5), cellY + ((this.mCellSizeY - 1) * 0.5));
-        this.mObj.getXform().setPosition(objPos[0], objPos[1]);
+        if(this.mIsLocked)
+        {
+            var objPos = this.mGrid.getWCFromCell(cellX + ((this.mCellSizeX - 1) * 0.5), cellY + ((this.mCellSizeY - 1) * 0.5));
+            this.mObj.getXform().setPosition(objPos[0], objPos[1]);
+        }
+
 
         this.mGrid.addObj(this);
 
@@ -215,7 +215,3 @@ GridObject.prototype.removeChildren = function()
         this.mChildren[i] = undefined;
     }
 };
-
-GridObject.prototype.setVisibility = function (f) { this.mVisible = f; };
-GridObject.prototype.isVisible = function () { return this.mVisible; };
-

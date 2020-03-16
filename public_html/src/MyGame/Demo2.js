@@ -91,69 +91,88 @@ Demo2.prototype.update = function ()
     var msg = "Status: ";
     var echo = "";
 
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W))
+    if(this.mHero.getIsLocked())
     {
-        if(this.mHero.getPos()[1] + 1 < this.mGrid.getNumRows()){
-            this.mHero.gridMovement(this.mHero.getPos()[0],this.mHero.getPos()[1] + 1);
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W))
+        {
+            if(this.mHero.getPos()[1] + 1 < this.mGrid.getNumRows()){
+                this.mHero.gridMovement(this.mHero.getPos()[0],this.mHero.getPos()[1] + 1);
+            }
+        }
+
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.A))
+        {
+            if(this.mHero.getPos()[0] - 1 >= 0){
+                this.mHero.gridMovement(this.mHero.getPos()[0] - 1,this.mHero.getPos()[1]);
+            }
+        }
+
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S))
+        {
+            if(this.mHero.getPos()[1] - 1 >= 0){
+                this.mHero.gridMovement(this.mHero.getPos()[0],this.mHero.getPos()[1] - 1);
+            }
+        }
+
+        if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D))
+        {
+            if(this.mHero.getPos()[0] + 1 < this.mGrid.getNumCols()){
+                this.mHero.gridMovement(this.mHero.getPos()[0] + 1,this.mHero.getPos()[1]);
+            }
         }
     }
-
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.A))
+    else
     {
-        if(this.mHero.getPos()[0] - 1 >= 0){
-            this.mHero.gridMovement(this.mHero.getPos()[0] - 1,this.mHero.getPos()[1]);
+        var xform = this.mHero.getXform();
+        
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up))
+        {
+            xform.setPosition(xform.getPosition()[0],xform.getPosition()[1] + 1.0);
+            this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+        }
+
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left))
+        {
+            xform.setPosition(xform.getPosition()[0] - 1.0,xform.getPosition()[1]);
+            this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+        }
+
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Down))
+        {
+            xform.setPosition(xform.getPosition()[0],xform.getPosition()[1] - 1.0);
+            this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+        }
+
+        if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right))
+        {
+            xform.setPosition(xform.getPosition()[0] + 1.0,xform.getPosition()[1]);
+            this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
         }
     }
+    
 
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S))
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space))
     {
-        if(this.mHero.getPos()[1] - 1 >= 0){
-            this.mHero.gridMovement(this.mHero.getPos()[0],this.mHero.getPos()[1] - 1);
-        }
-    }
-
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D))
-    {
-        if(this.mHero.getPos()[0] + 1 < this.mGrid.getNumCols()){
-            this.mHero.gridMovement(this.mHero.getPos()[0] + 1,this.mHero.getPos()[1]);
-        }
-    }
-
-    var xform = this.mHero.getXform();
-
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up))
-    {
-        xform.setPosition(xform.getPosition()[0],xform.getPosition()[1] + 1.0);
-        this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
-    }
-
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left))
-    {
-        xform.setPosition(xform.getPosition()[0] - 1.0,xform.getPosition()[1]);
-        this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
-    }
-
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Down))
-    {
-        xform.setPosition(xform.getPosition()[0],xform.getPosition()[1] - 1.0);
-        this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
-    }
-
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right))
-    {
-        xform.setPosition(xform.getPosition()[0] + 1.0,xform.getPosition()[1]);
-        this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
-    }
-
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space))
-    {
-        console.log("Pressed");
         this.mHero.gridMovement(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.P)) 
+    {
+        if(this.mHero.getIsLocked()){
+            this.mHero.unlockObject();
+        }else{
+            this.mHero.lockObject();
+        }
     }
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q))
     {
         this.mHero.setSize(3, 3);
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.E))
+    {
+        this.mHero.setSize(2, 2);
     }
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.R))

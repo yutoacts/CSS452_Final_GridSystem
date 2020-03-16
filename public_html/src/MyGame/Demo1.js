@@ -119,41 +119,14 @@ Demo1.prototype.update = function ()
         }
     }
 
-    var xform = this.mHero.getXform();
-
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up))
-    {
-        xform.setPosition(xform.getPosition()[0],xform.getPosition()[1] + 1.0);
-        this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
-    }
-
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left))
-    {
-        xform.setPosition(xform.getPosition()[0] - 1.0,xform.getPosition()[1]);
-        this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
-    }
-
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Down))
-    {
-        xform.setPosition(xform.getPosition()[0],xform.getPosition()[1] - 1.0);
-        this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
-    }
-
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right))
-    {
-        xform.setPosition(xform.getPosition()[0] + 1.0,xform.getPosition()[1]);
-        this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
-    }
-
-    if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Space))
-    {
-        console.log("Pressed");
-        this.mHero.gridMovement(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
-    }
-
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q))
     {
         this.mHero.setSize(3, 3);
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.E))
+    {
+        this.mHero.setSize(2, 2);
     }
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.R))

@@ -104,12 +104,24 @@ GridObject.prototype.setSize = function(cellSizeX, cellSizeY)
     }
 };
 
+GridObject.prototype.getIsLocked = function() { return this.mIsLocked;};
 GridObject.prototype.lockObject = function() { this.mIsLocked = true; };
 GridObject.prototype.unlockObject = function() { this.mIsLocked = false; };
 
 GridObject.prototype.getParent = function () { return this.mParent; };
 GridObject.prototype.getChildren = function () { return this.mChildren; };
-GridObject.prototype.getXform = function () { return this.mObj.getXform(); };
+GridObject.prototype.getXform = function ()
+{
+    if(!this.mIsLocked)
+    {
+        return this.mObj.getXform();
+    }
+    else
+    {
+        console.error("Unaccessable as the object is locked");
+        return false;
+    }
+};
 
 GridObject.prototype.getBBox = function () 
 {
@@ -134,7 +146,11 @@ GridObject.prototype.getGameObject = function()
 
 GridObject.prototype.getClosestCell = function ()
 {
-    var objectPos = this.getXform().getPosition();
+    var objectPos = vec2.fromValues(
+                    this.getXform().getPosition()[0] - this.mGrid.getCellWidth() * (this.mCellSizeX - 1) / 2
+                   ,this.getXform().getPosition()[1] - this.mGrid.getCellHeight() * (this.mCellSizeY - 1) / 2
+                    );
+    console.log(objectPos);
     var minDist = Number.MAX_SAFE_INTEGER;
     
     var closestCell = vec2.fromValues(0, 0);

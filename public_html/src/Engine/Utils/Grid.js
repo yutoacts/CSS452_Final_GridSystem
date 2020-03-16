@@ -54,8 +54,9 @@ Grid.prototype.draw = function(aCamera)
             if(obj !== undefined)
             {
                 // Draw occupied slots
-                if(this.mShowGrid)
+                if(this.mShowGrid && obj.getIsLocked())
                 {
+                    
                     var square = new Renderable();
                     var objPos = obj.getPos();
                     var objPosWC = this.getWCFromCell(i, j);

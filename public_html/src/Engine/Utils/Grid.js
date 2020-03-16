@@ -24,12 +24,24 @@ function Grid(gridSizeX, gridSizeY, cellSizeX, cellSizeY)
     
     this.mGridObjects = [];         // 2D array of GridObjects
     
+    this.mGridOccupancies = [];
+    this.mObjIdentifier = 0;
+    
     // Initialize 2D Array
     for(var i = 0; i < this.mGridSizeX; i++)
     {
         var GridObjectsY = [];
         this.mGridObjects.push(GridObjectsY);
+        
+        for(var j = 0; j < this.mGridSizeY; j++)
+        {
+            GridObjectsY.push(-1);
+        }
+        this.mGridOccupancies.push(GridObjectsY);
+        
     }
+    
+    
 }
 
 Grid.prototype.update = function()
@@ -71,7 +83,36 @@ Grid.prototype.draw = function(aCamera)
 };
 
 // <editor-fold desc="Public Methods">
-Grid.prototype.getObjFromCell = function(cellX, cellY) { return this.mGridObjects[cellX][cellY]; };
+Grid.prototype.getObjFromCell = function(cellX, cellY)
+{ 
+    return this.mGridObjects[cellX][cellY];
+//    if(this.mGridOccupancies[cellX][cellY] === -1)
+//    {
+//        return undefined;
+//    }
+//    else
+//    {
+//        if(this.mGridObjects[cellX][cellY] === undefined)
+//        {
+//            var target = this.mGridOccupancies[cellX][cellY];
+//            console.log(target);
+//
+//            while(this.mGridOccupancies[cellX - 1][cellY] === target)
+//            {
+//                cellX--;
+//            }
+//            while(this.mGridOccupancies[cellX][cellY - 1] === target)
+//            {
+//                cellY--;
+//            }
+//        }
+//        console.log(cellX,cellY);
+//        console.log(this.mGridObjects[cellX][cellY]);
+//        return this.mGridObjects[cellX][cellY];
+//    }
+};
+
+
 Grid.prototype.getWCFromCell = function(cellX, cellY)
 {
     // Check valid cell values
@@ -98,6 +139,16 @@ Grid.prototype.addObj = function (obj)
         var objectPos = obj.getPos();
         this.mGridObjects[objectPos[0]][objectPos[1]] = obj;
         this.mCount++;
+        
+//        for(var i = 0; i < obj.getSize()[0]; i++)
+//        {
+//            for(var j = 0; j < obj.getSize()[1]; j++)
+//            {
+//                this.mGridOccupancies[objectPos[0] + i][objectPos[1] + j] = this.mObjIdentifier;
+//            }
+//        }
+//                
+//        this.mObjIdentifier++;
     }
 };
 
@@ -111,6 +162,14 @@ Grid.prototype.removeObj = function (obj)
 
         this.mGridObjects[x].splice(y, 1);
         this.mCount--;
+        
+//        for(var i = 0; i < obj.getSize()[0]; i++)
+//        {
+//            for(var j = 0; j < obj.getSize()[1]; j++)
+//            {
+//                this.mGridOccupancies[x + i][y + j] = -1;
+//            }
+//        }
     }
 };
 

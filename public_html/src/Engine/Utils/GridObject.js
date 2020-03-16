@@ -16,6 +16,8 @@ function GridObject(obj, grid, cellX, cellY, cellSizeX, cellSizeY, isLocked)
     this.mCellSizeX = cellSizeX;
     this.mCellSizeY = cellSizeY;
     
+    this.mIdentifier = -1;
+    
     this.mGrid = grid;
     this.mObj = obj;
     
@@ -98,4 +100,7 @@ GridObject.prototype.getGameObject = function()
 
 GridObject.prototype.setVisibility = function (f) { this.mVisible = f; };
 GridObject.prototype.isVisible = function () { return this.mVisible; };
+
+GridObject.prototype.setIdentifier = function (n) { this.mIdentifier = n; };
+GridObject.prototype.getIdentifier = function () { return this.mIdentifier; };
 

@@ -90,7 +90,7 @@ GridObject.prototype.setSize = function(cellSizeX, cellSizeY)
     this.mCellSizeX = cellSizeX;
     this.mCellSizeY = cellSizeY;
     // Check if able to resize
-    if(!(this.gridMovement(this.mCellX, this.mCellY)))
+    if(!(this.setPos(this.mCellX, this.mCellY)))
     {
         // Unable to resize, return to previous values
         this.mCellSizeX = tempX;
@@ -129,7 +129,7 @@ GridObject.prototype.setGameObject = function(obj)
     if(obj !== undefined)
     {
         this.mObj = obj;
-        this.gridMovement(this.getPos()[0], this.getPos()[1]);
+        this.setPos(this.getPos()[0], this.getPos()[1]);
     }
 };
 

@@ -110,7 +110,9 @@ Grid.prototype.removeObj = function (obj)
         var x = objectPos[0];
         var y = objectPos[1];
 
+//        this.mGridObjects[x].splice(y, 1);
         this.mGridObjects[x][y] = undefined;
+
         this.mCount--;
     }
 };

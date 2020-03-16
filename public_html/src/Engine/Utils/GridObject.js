@@ -42,14 +42,6 @@ GridObject.prototype.draw = function (aCamera)
 
 GridObject.prototype.getPos = function () { return vec2.fromValues(this.mCellX, this.mCellY); };
 GridObject.prototype.setPos = function (cellX, cellY) 
-{
-    this.mGrid.removeObj(this);
-    this.mCellX = cellX;
-    this.mCellY = cellY;
-    this.mGrid.addObj(this);
-};
-
-GridObject.prototype.gridMovement = function (cellX, cellY) 
 { 
     // Check valid cell values
     if(cellX + (this.mCellSizeX - 1) >= 0 && cellY + (this.mCellSizeY - 1) >= 0 && cellX + (this.mCellSizeX - 1) < this.mGrid.getNumCols() && cellY + (this.mCellSizeY - 1) < this.mGrid.getNumRows())
@@ -62,6 +54,7 @@ GridObject.prototype.gridMovement = function (cellX, cellY)
                 // Check if slot is occupied or is itself
                 if(!(this.mGrid.getObjFromCell(i, j) === undefined || this.mGrid.getObjFromCell(i, j) === this))
                 {
+                    console.error("Slot (" + i + ", " + j + ") is occupied.");
                     return false;
                 }
             }
@@ -83,6 +76,7 @@ GridObject.prototype.gridMovement = function (cellX, cellY)
 
         return true;
     }
+    console.error("Invalid cell values.");
     return false;
 };
 
@@ -104,7 +98,7 @@ GridObject.prototype.setSize = function(cellSizeX, cellSizeY)
     }
 };
 
-GridObject.prototype.getIsLocked = function() { return this.mIsLocked;};
+GridObject.prototype.isLocked = function() { return this.mIsLocked;};
 GridObject.prototype.lockObject = function() { this.mIsLocked = true; };
 GridObject.prototype.unlockObject = function() { this.mIsLocked = false; };
 
@@ -118,7 +112,7 @@ GridObject.prototype.getXform = function ()
     }
     else
     {
-        console.error("Unaccessable as the object is locked");
+        console.error("Unaccessible as the object is locked.");
         return false;
     }
 };
@@ -150,7 +144,6 @@ GridObject.prototype.getClosestCell = function ()
                     this.getXform().getPosition()[0] - this.mGrid.getCellWidth() * (this.mCellSizeX - 1) / 2
                    ,this.getXform().getPosition()[1] - this.mGrid.getCellHeight() * (this.mCellSizeY - 1) / 2
                     );
-    console.log(objectPos);
     var minDist = Number.MAX_SAFE_INTEGER;
     
     var closestCell = vec2.fromValues(0, 0);

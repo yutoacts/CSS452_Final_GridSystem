@@ -19,6 +19,7 @@ function Demo1()
     this.mCamera = null;
     this.mGrid = null;
     this.mMsg = null;
+    this.mTitle = null;
     this.mHero = null;
     this.mPatrol = null;
 }
@@ -53,6 +54,12 @@ Demo1.prototype.initialize = function ()
     this.mMsg.setColor([0, 0, 0, 1]);
     this.mMsg.getXform().setPosition(-96, -70);
     this.mMsg.setTextHeight(4);
+    
+    this.mTitle = new FontRenderable("Title");
+    this.mTitle.setColor([0, 0, 0, 1]);
+    this.mTitle.getXform().setPosition(-96, 70);
+    this.mTitle.setTextHeight(8);
+    this.mTitle.setText("Demo 1");
 
     this.mGrid = new Grid(5, 5, 25, 25);
     this.mGrid.setDraw(true);
@@ -80,7 +87,8 @@ Demo1.prototype.draw = function ()
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
 
     this.mCamera.setupViewProjection();
-    this.mMsg.draw(this.mCamera);   // only draw status in the main camera
+    this.mMsg.draw(this.mCamera);
+    this.mTitle.draw(this.mCamera);
     this.mGrid.draw(this.mCamera);
 };
 
@@ -94,28 +102,28 @@ Demo1.prototype.update = function ()
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W))
     {
         if(this.mHero.getPos()[1] + 1 < this.mGrid.getNumRows()){
-            this.mHero.gridMovement(this.mHero.getPos()[0],this.mHero.getPos()[1] + 1);
+            this.mHero.setPos(this.mHero.getPos()[0],this.mHero.getPos()[1] + 1);
         }
     }
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.A))
     {
         if(this.mHero.getPos()[0] - 1 >= 0){
-            this.mHero.gridMovement(this.mHero.getPos()[0] - 1,this.mHero.getPos()[1]);
+            this.mHero.setPos(this.mHero.getPos()[0] - 1,this.mHero.getPos()[1]);
         }
     }
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S))
     {
         if(this.mHero.getPos()[1] - 1 >= 0){
-            this.mHero.gridMovement(this.mHero.getPos()[0],this.mHero.getPos()[1] - 1);
+            this.mHero.setPos(this.mHero.getPos()[0],this.mHero.getPos()[1] - 1);
         }
     }
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D))
     {
         if(this.mHero.getPos()[0] + 1 < this.mGrid.getNumCols()){
-            this.mHero.gridMovement(this.mHero.getPos()[0] + 1,this.mHero.getPos()[1]);
+            this.mHero.setPos(this.mHero.getPos()[0] + 1,this.mHero.getPos()[1]);
         }
     }
 

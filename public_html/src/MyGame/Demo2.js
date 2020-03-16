@@ -19,6 +19,7 @@ function Demo2()
     this.mCamera = null;
     this.mGrid = null;
     this.mMsg = null;
+    this.mTitle = null;
     this.mHero = null;
     this.mPatrol = null;
 }
@@ -53,6 +54,12 @@ Demo2.prototype.initialize = function ()
     this.mMsg.setColor([0, 0, 0, 1]);
     this.mMsg.getXform().setPosition(-96, -70);
     this.mMsg.setTextHeight(4);
+    
+    this.mTitle = new FontRenderable("Title");
+    this.mTitle.setColor([0, 0, 0, 1]);
+    this.mTitle.getXform().setPosition(-96, 70);
+    this.mTitle.setTextHeight(8);
+    this.mTitle.setText("Demo 2");
 
     this.mGrid = new Grid(5, 5, 25, 25);
     this.mGrid.setDraw(true);
@@ -60,8 +67,7 @@ Demo2.prototype.initialize = function ()
     this.mHero = new Hero(this.kMinionSprite, 35, 50);
     this.mHero = new GridObject(this.mHero, this.mGrid,
                                 0, 0,
-                                2, 2, true);
-    this.mHero.getGameObject().getXform().incSizeBy(10);
+                                1, 1, true);
 
     this.mPatrol = new Patrol(this.kMinionSprite, 30, 30);
     this.mPatrol = new GridObject(this.mPatrol, this.mGrid,
@@ -81,6 +87,7 @@ Demo2.prototype.draw = function ()
 
     this.mCamera.setupViewProjection();
     this.mMsg.draw(this.mCamera);   // only draw status in the main camera
+    this.mTitle.draw(this.mCamera);
     this.mGrid.draw(this.mCamera);
 };
 
@@ -91,33 +98,33 @@ Demo2.prototype.update = function ()
     var msg = "Status: ";
     var echo = "";
 
-    if(this.mHero.getIsLocked())
+    if(this.mHero.isLocked())
     {
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.W))
         {
             if(this.mHero.getPos()[1] + 1 < this.mGrid.getNumRows()){
-                this.mHero.gridMovement(this.mHero.getPos()[0],this.mHero.getPos()[1] + 1);
+                this.mHero.setPos(this.mHero.getPos()[0],this.mHero.getPos()[1] + 1);
             }
         }
 
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.A))
         {
             if(this.mHero.getPos()[0] - 1 >= 0){
-                this.mHero.gridMovement(this.mHero.getPos()[0] - 1,this.mHero.getPos()[1]);
+                this.mHero.setPos(this.mHero.getPos()[0] - 1,this.mHero.getPos()[1]);
             }
         }
 
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.S))
         {
             if(this.mHero.getPos()[1] - 1 >= 0){
-                this.mHero.gridMovement(this.mHero.getPos()[0],this.mHero.getPos()[1] - 1);
+                this.mHero.setPos(this.mHero.getPos()[0],this.mHero.getPos()[1] - 1);
             }
         }
 
         if (gEngine.Input.isKeyClicked(gEngine.Input.keys.D))
         {
             if(this.mHero.getPos()[0] + 1 < this.mGrid.getNumCols()){
-                this.mHero.gridMovement(this.mHero.getPos()[0] + 1,this.mHero.getPos()[1]);
+                this.mHero.setPos(this.mHero.getPos()[0] + 1,this.mHero.getPos()[1]);
             }
         }
     }
@@ -128,56 +135,41 @@ Demo2.prototype.update = function ()
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Up))
         {
             xform.setPosition(xform.getPosition()[0],xform.getPosition()[1] + 1.0);
-            this.mHero.gridMovement(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+            this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Left))
         {
             xform.setPosition(xform.getPosition()[0] - 1.0,xform.getPosition()[1]);
-            this.mHero.gridMovement(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+            this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Down))
         {
             xform.setPosition(xform.getPosition()[0],xform.getPosition()[1] - 1.0);
-            this.mHero.gridMovement(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+            this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
         }
 
         if (gEngine.Input.isKeyPressed(gEngine.Input.keys.Right))
         {
             xform.setPosition(xform.getPosition()[0] + 1.0,xform.getPosition()[1]);
-            this.mHero.gridMovement(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+            this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
         }
     }
     
 
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space))
     {
-        this.mHero.gridMovement(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+        this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
     }
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.P)) 
     {
-        if(this.mHero.getIsLocked()){
+        if(this.mHero.isLocked()){
             this.mHero.unlockObject();
         }else{
             this.mHero.lockObject();
         }
-    }
-
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q))
-    {
-        this.mHero.setSize(3, 3);
-    }
-    
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.E))
-    {
-        this.mHero.setSize(2, 2);
-    }
-
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.R))
-    {
-        this.mHero.setSize(1, 1);
     }
     
     // Scene Transition
@@ -191,8 +183,7 @@ Demo2.prototype.update = function ()
     echo += "Grid Size: " + this.mGrid.getNumCols() + "x" + this.mGrid.getNumRows() + " with ";
     echo += "Cell Size: " + this.mGrid.getCellWidth() + "x" + this.mGrid.getCellHeight() + " ";
     echo += "Hero: " + this.mHero.getPos() + " ";
-    echo += "Patrol: " + this.mPatrol.getPos() + " ";
-    echo += "Objects: " + this.mGrid.getNumObjects() + " ";
+    echo += "Locked: " + this.mHero.isLocked() + " ";
 
     msg += echo;
     this.mMsg.setText(msg);

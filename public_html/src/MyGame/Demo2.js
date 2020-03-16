@@ -1,5 +1,5 @@
 /*
- * File: MyGame.js
+ * File: Demo2.js
  * This is the logic of our game.
  */
 
@@ -11,7 +11,7 @@
 
 "use strict";  // Operate in Strict mode such that variables must be declared before used!
 
-function MyGame()
+function Demo2()
 {
     this.kMinionSprite = "assets/SpriteSheet.png";
 
@@ -23,19 +23,19 @@ function MyGame()
     this.mPatrol = null;
 }
 
-gEngine.Core.inheritPrototype(MyGame, Scene);
+gEngine.Core.inheritPrototype(Demo2, Scene);
 
-MyGame.prototype.loadScene = function ()
+Demo2.prototype.loadScene = function ()
 {
     gEngine.Textures.loadTexture(this.kMinionSprite);
 };
 
-MyGame.prototype.unloadScene = function ()
+Demo2.prototype.unloadScene = function ()
 {
     gEngine.Textures.unloadTexture(this.kMinionSprite);
 };
 
-MyGame.prototype.initialize = function ()
+Demo2.prototype.initialize = function ()
 {
     // Step A: set up the cameras
     this.mCamera = new Camera(
@@ -71,7 +71,7 @@ MyGame.prototype.initialize = function ()
 
 // This is the draw function, make sure to setup proper drawing environment, and more
 // importantly, make sure to _NOT_ change any state.
-MyGame.prototype.draw = function ()
+Demo2.prototype.draw = function ()
 {
     // Step A: clear the canvas
     gEngine.Core.clearCanvas([0.9, 0.9, 0.9, 1.0]); // clear to light gray
@@ -83,7 +83,7 @@ MyGame.prototype.draw = function ()
 
 // The Update function, updates the application state. Make sure to _NOT_ draw
 // anything from this function!
-MyGame.prototype.update = function ()
+Demo2.prototype.update = function ()
 {
     var msg = "Status: ";
     var echo = "";

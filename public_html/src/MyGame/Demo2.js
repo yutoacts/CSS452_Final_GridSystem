@@ -157,10 +157,19 @@ Demo2.prototype.update = function ()
         }
     }
     
-
-    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Space))
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.Q))
     {
-        this.mHero.setPos(this.mHero.getClosestCell()[0],this.mHero.getClosestCell()[1]);
+        this.mHero.setSize(3, 3);
+    }
+    
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.E))
+    {
+        this.mHero.setSize(2, 2);
+    }
+
+    if (gEngine.Input.isKeyClicked(gEngine.Input.keys.R))
+    {
+        this.mHero.setSize(1, 1);
     }
     
     if (gEngine.Input.isKeyClicked(gEngine.Input.keys.P)) 
